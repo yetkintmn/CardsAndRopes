@@ -25,7 +25,6 @@ public class ItemSpawner : MonoBehaviour
 
     private void SpawnCard(int currency)
     {
-        Debug.Log("SpawnCard");
         Slot emptySlot = null;
         foreach (Slot slot in slotList)
         {
@@ -71,7 +70,6 @@ public class ItemSpawner : MonoBehaviour
         else
             _disabledCardCount++;
 
-        Debug.Log(_disabledCardCount);
         if (_disabledCardCount >= _spawnedCardList.Count)
             EventManager.Get<AllCardsDisabled>().Execute();
     }

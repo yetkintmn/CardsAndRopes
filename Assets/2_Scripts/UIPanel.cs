@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPanel : MonoSingleton<UIPanel>
+public class UIPanel : MonoBehaviour
 {
     [SerializeField] private Button buyCardBtn;
     [SerializeField] private Button throwCardBtn;
@@ -19,7 +19,7 @@ public class UIPanel : MonoSingleton<UIPanel>
         throwCardBtn.onClick.AddListener(ThrowCard);
 
         EventManager.Get<ChangeCurrency>().AddListener(SetCurrencyText);
-        EventManager.Get<CollectGift>().AddListener(SetGoalText);
+        EventManager.Get<GiftCollected>().AddListener(SetGoalText);
     }
 
     private void OnDisable()
@@ -28,7 +28,7 @@ public class UIPanel : MonoSingleton<UIPanel>
         throwCardBtn.onClick.RemoveListener(ThrowCard);
 
         EventManager.Get<ChangeCurrency>().RemoveListener(SetCurrencyText);
-        EventManager.Get<CollectGift>().RemoveListener(SetGoalText);
+        EventManager.Get<GiftCollected>().RemoveListener(SetGoalText);
     }
 
     private void Start()
@@ -55,9 +55,9 @@ public class UIPanel : MonoSingleton<UIPanel>
         moneyTxt.text = currency.ToString();
     }
 
-    private void SetGoalText()
+    private void SetGoalText(int goalCount = 0)
     {
-        goalTxt.text = GoalController.Instance.GoalCount + "/" + GameDataManager.Instance.GiftGoalLimit;
+        goalTxt.text = goalCount + "/" + GameDataManager.Instance.GiftGoalLimit;
     }
 
     private void SetLevelText()

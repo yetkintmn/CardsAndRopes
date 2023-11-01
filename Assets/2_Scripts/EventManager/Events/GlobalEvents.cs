@@ -24,6 +24,11 @@ public class CollectGift : AEvent
 {
 }
 
+public class GiftCollected : AEvent<int>
+{
+}
+
+
 public class CardDisabled : AEvent<Card, bool>
 {
 }

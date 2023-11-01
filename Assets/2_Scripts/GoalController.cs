@@ -1,16 +1,17 @@
 using DG.Tweening;
 using TMN;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GoalController : MonoSingleton<GoalController>
+public class GoalController : MonoBehaviour
 {
     private int _goalLimit;
-    public int GoalCount { get; private set; }
+    private int _goalCount;
 
     private void OnEnable()
     {
         _goalLimit = GameDataManager.Instance.GiftGoalLimit;
-        GoalCount = 0;
+        _goalCount = 0;
 
         EventManager.Get<CollectGift>().AddListener(CollectGift);
         EventManager.Get<AllCardsDisabled>().AddListener(ControlGoal);
@@ -24,12 +25,13 @@ public class GoalController : MonoSingleton<GoalController>
 
     private void CollectGift()
     {
-        GoalCount++;
+        _goalCount++;
+        EventManager.Get<GiftCollected>().Execute(_goalCount);
     }
 
     private bool IsReachedGoal()
     {
-        return GoalCount >= _goalLimit;
+        return _goalCount >= _goalLimit;
     }
 
     private void ControlGoal()
