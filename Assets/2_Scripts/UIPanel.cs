@@ -18,8 +18,8 @@ public class UIPanel : MonoSingleton<UIPanel>
         buyCardBtn.onClick.AddListener(BuyCard);
         throwCardBtn.onClick.AddListener(ThrowCard);
 
-        EventManager.Get<ChangeCurrency>().AddListener(SetCurrency);
-        EventManager.Get<CollectGift>().AddListener(SetGoal);
+        EventManager.Get<ChangeCurrency>().AddListener(SetCurrencyText);
+        EventManager.Get<CollectGift>().AddListener(SetGoalText);
     }
 
     private void OnDisable()
@@ -27,19 +27,20 @@ public class UIPanel : MonoSingleton<UIPanel>
         buyCardBtn.onClick.RemoveListener(BuyCard);
         throwCardBtn.onClick.RemoveListener(ThrowCard);
 
-        EventManager.Get<ChangeCurrency>().RemoveListener(SetCurrency);
-        EventManager.Get<CollectGift>().RemoveListener(SetGoal);
+        EventManager.Get<ChangeCurrency>().RemoveListener(SetCurrencyText);
+        EventManager.Get<CollectGift>().RemoveListener(SetGoalText);
     }
 
     private void Start()
     {
-        SetCurrency();
-        SetGoal();
+        SetCurrencyText();
+        SetGoalText();
+        SetLevelText();
     }
 
     private void BuyCard()
     {
-        EventManager.Get<BuyCard>().Execute();
+        EventManager.Get<BuyCard>().Execute(GameDataManager.Instance.CardPrice);
     }
 
     private void ThrowCard()
@@ -47,15 +48,20 @@ public class UIPanel : MonoSingleton<UIPanel>
         EventManager.Get<ThrowCard>().Execute();
     }
 
-    private void SetCurrency()
+    private void SetCurrencyText()
     {
         var currency = CurrencyManager.Instance.GetCurrency();
         buyCardBtn.interactable = currency >= GameDataManager.Instance.CardPrice;
         moneyTxt.text = currency.ToString();
     }
 
-    private void SetGoal()
+    private void SetGoalText()
     {
         goalTxt.text = GoalController.Instance.GoalCount + "/" + GameDataManager.Instance.GiftGoalLimit;
+    }
+
+    private void SetLevelText()
+    {
+        levelTxt.text = "Level " + LevelManager.Instance.Level;
     }
 }

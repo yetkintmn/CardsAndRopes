@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GenerateRopes : MonoBehaviour
+public class RopeGenerator : MonoBehaviour
 {
     [SerializeField] private List<Rope> ropeList;
 

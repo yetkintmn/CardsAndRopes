@@ -12,7 +12,7 @@ public class ChangeCurrency : AEvent
 {
 }
 
-public class BuyCard : AEvent
+public class BuyCard : AEvent<int>
 {
 }
 
@@ -21,5 +21,13 @@ public class ThrowCard : AEvent
 }
 
 public class CollectGift : AEvent
+{
+}
+
+public class CardDisabled : AEvent<Card, bool>
+{
+}
+
+public class AllCardsDisabled : AEvent
 {
 }

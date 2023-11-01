@@ -50,7 +50,7 @@ public class MoveController : MonoBehaviour
                         standOnSlot.FillSlot(_moveable);
                         _lastSlot.SetEmptySlot();
                         _lastSlot = standOnSlot;
-                        PoolManager.Instance.Despawn(mergeable.Type, hit.collider.gameObject);
+                        mergeable.DisableForMerge();
                     }
                 }
 

@@ -7,17 +7,23 @@ public class ItemSpawner : MonoBehaviour
 {
     [SerializeField] private List<Slot> slotList;
 
+    private List<Card> _spawnedCardList = new List<Card>();
+
+    private int _disabledCardCount;
+
     private void OnEnable()
     {
         EventManager.Get<BuyCard>().AddListener(SpawnCard);
+        EventManager.Get<CardDisabled>().AddListener(CardDisabled);
     }
 
     private void OnDisable()
     {
         EventManager.Get<BuyCard>().RemoveListener(SpawnCard);
+        EventManager.Get<CardDisabled>().RemoveListener(CardDisabled);
     }
 
-    private void SpawnCard()
+    private void SpawnCard(int currency)
     {
         Debug.Log("SpawnCard");
         Slot emptySlot = null;
@@ -36,6 +42,7 @@ public class ItemSpawner : MonoBehaviour
         newCard.transform.position = emptySlot.StandV3;
         var moveable = newCard.GetComponent<IMoveable>();
         emptySlot.FillSlot(moveable);
+        _spawnedCardList.Add(newCard.GetComponent<Card>());
     }
 
     private void SpawnChest()
@@ -55,5 +62,17 @@ public class ItemSpawner : MonoBehaviour
         var newChest = PoolManager.Instance.Spawn(Pools.Types.Chest);
         newChest.transform.position = emptySlot.StandV3;
         emptySlot.FillSlot(newChest.GetComponent<IMoveable>());
+    }
+
+    private void CardDisabled(Card card, bool merged)
+    {
+        if (merged)
+            _spawnedCardList.Remove(card);
+        else
+            _disabledCardCount++;
+
+        Debug.Log(_disabledCardCount);
+        if (_disabledCardCount >= _spawnedCardList.Count)
+            EventManager.Get<AllCardsDisabled>().Execute();
     }
 }

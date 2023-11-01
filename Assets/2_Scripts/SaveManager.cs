@@ -17,12 +17,13 @@ public class SaveManager : Singleton<SaveManager>
     {
         IsFirstPlay = true;
         IsFirstPlay = !PlayerPrefs.HasKey("isfirstplay");
-        CurrencyManager.Instance.SetCurrency(PlayerPrefs.GetInt("currency"));
+        CurrencyManager.Instance.LoadCurrency(PlayerPrefs.GetInt("currency"));
         LevelManager.Instance.SetLevel(PlayerPrefs.GetInt("level"));
     }
 
     public void SaveData()
     {
+        IsFirstPlay = false;
         PlayerPrefs.SetInt("isfirstplay", 0);
         PlayerPrefs.SetInt("currency", CurrencyManager.Instance.GetCurrency());
         PlayerPrefs.SetInt("level", LevelManager.Instance.Level);
