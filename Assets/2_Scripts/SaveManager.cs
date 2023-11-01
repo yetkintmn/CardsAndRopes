@@ -25,7 +25,7 @@ public class SaveManager : Singleton<SaveManager>
     {
         PlayerPrefs.SetInt("isfirstplay", 0);
         PlayerPrefs.SetInt("currency", CurrencyManager.Instance.GetCurrency());
-        PlayerPrefs.SetInt("level", LevelManager.Instance.GetLevel());
+        PlayerPrefs.SetInt("level", LevelManager.Instance.Level);
         PlayerPrefs.Save();
     }
 }

@@ -1,24 +1,19 @@
 public class LevelManager : Singleton<LevelManager>
 {
-    private int _level;
+    public int Level { get; private set; }
 
     public void SetLevel(int level)
     {
         if (SaveManager.Instance.IsFirstPlay)
         {
-            _level = 1;
+            Level = 1;
             return;
         }
-        _level = level;
-    }
-
-    public int GetLevel()
-    {
-        return _level;
+        Level = level;
     }
 
     public void LevelUp()
     {
-        _level ++;
+        Level ++;
     }
 }

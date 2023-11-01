@@ -19,9 +19,7 @@ public class UIPanel : MonoSingleton<UIPanel>
         throwCardBtn.onClick.AddListener(ThrowCard);
 
         EventManager.Get<ChangeCurrency>().AddListener(SetCurrency);
-
-        SetCurrency();
-        SetGoal();
+        EventManager.Get<CollectGift>().AddListener(SetGoal);
     }
 
     private void OnDisable()
@@ -30,6 +28,13 @@ public class UIPanel : MonoSingleton<UIPanel>
         throwCardBtn.onClick.RemoveListener(ThrowCard);
 
         EventManager.Get<ChangeCurrency>().RemoveListener(SetCurrency);
+        EventManager.Get<CollectGift>().RemoveListener(SetGoal);
+    }
+
+    private void Start()
+    {
+        SetCurrency();
+        SetGoal();
     }
 
     private void BuyCard()
@@ -51,6 +56,6 @@ public class UIPanel : MonoSingleton<UIPanel>
 
     private void SetGoal()
     {
-        goalTxt.text = "0/" + GameDataManager.Instance.GiftGoalLimit;
+        goalTxt.text = GoalController.Instance.GoalCount + "/" + GameDataManager.Instance.GiftGoalLimit;
     }
 }

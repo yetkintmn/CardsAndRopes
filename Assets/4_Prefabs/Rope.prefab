@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7263621089070822867}
   - component: {fileID: 7263621089070822866}
   - component: {fileID: 7263621089070822869}
+  - component: {fileID: 6401659495953852634}
   m_Layer: 0
   m_Name: Rope
   m_TagString: Rope
@@ -97,3 +98,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6401659495953852634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7263621089070822868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5e3b3358a4935444a2b568981a3568b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

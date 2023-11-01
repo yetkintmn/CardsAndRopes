@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using TMN;
 using TMN.PoolManager;
 using UnityEngine;
@@ -59,7 +60,27 @@ public class Card : MonoBehaviour, IMoveable, IMergeable
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Rope"))
-            TurnBack();
+        {
+            if (collision.gameObject.TryGetComponent<Rope>(out Rope rope))
+                if (rope.RopeLevel <= _level)
+                    rope.gameObject.SetActive(false);
+                else
+                    TurnBack();
+            else
+                TurnBack();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Gift"))
+            CollectGift();
+    }
+
+    private void CollectGift()
+    {
+        EventManager.Get<CollectGift>().Execute();
+        DOVirtual.DelayedCall(0.2f, () => PoolManager.Instance.Despawn(Pools.Types.Card, gameObject));
     }
 
     public void ChangeMesh(Mesh mesh)

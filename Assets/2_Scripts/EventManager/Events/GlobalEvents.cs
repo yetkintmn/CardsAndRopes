@@ -19,3 +19,7 @@ public class BuyCard : AEvent
 public class ThrowCard : AEvent
 {
 }
+
+public class CollectGift : AEvent
+{
+}
