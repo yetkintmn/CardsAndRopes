@@ -1,5 +1,4 @@
 using TMN;
-using TMN.PoolManager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +8,7 @@ public class UIPanel : MonoSingleton<UIPanel>
     [SerializeField] private Button buyCardBtn;
     [SerializeField] private Button throwCardBtn;
 
+    [SerializeField] private TextMeshProUGUI buyCardTxt;
     [SerializeField] private TextMeshProUGUI moneyTxt;
     [SerializeField] private TextMeshProUGUI goalTxt;
     [SerializeField] private TextMeshProUGUI levelTxt;
@@ -18,7 +18,10 @@ public class UIPanel : MonoSingleton<UIPanel>
         buyCardBtn.onClick.AddListener(BuyCard);
         throwCardBtn.onClick.AddListener(ThrowCard);
 
-        EventManager.Get<ChangeCurrency>().AddListener(ChangeCurrency);
+        EventManager.Get<ChangeCurrency>().AddListener(SetCurrency);
+
+        SetCurrency();
+        SetGoal();
     }
 
     private void OnDisable()
@@ -26,7 +29,7 @@ public class UIPanel : MonoSingleton<UIPanel>
         buyCardBtn.onClick.RemoveListener(BuyCard);
         throwCardBtn.onClick.RemoveListener(ThrowCard);
 
-        EventManager.Get<ChangeCurrency>().RemoveListener(ChangeCurrency);
+        EventManager.Get<ChangeCurrency>().RemoveListener(SetCurrency);
     }
 
     private void BuyCard()
@@ -39,10 +42,15 @@ public class UIPanel : MonoSingleton<UIPanel>
         EventManager.Get<ThrowCard>().Execute();
     }
 
-    private void ChangeCurrency()
+    private void SetCurrency()
     {
         var currency = CurrencyManager.Instance.GetCurrency();
         buyCardBtn.interactable = currency >= GameDataManager.Instance.CardPrice;
         moneyTxt.text = currency.ToString();
+    }
+
+    private void SetGoal()
+    {
+        goalTxt.text = "0/" + GameDataManager.Instance.GiftGoalLimit;
     }
 }

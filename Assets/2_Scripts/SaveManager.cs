@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // Normalde kullandýðým SaveManager'ý eklemedim çünkü çoðu kýsmý UDO içerisinde geliþtirilmiþti.
@@ -7,6 +5,8 @@ using UnityEngine;
 
 public class SaveManager : Singleton<SaveManager>
 {
+    public bool IsFirstPlay {  get; private set; }
+
     public override void Awake()
     {
         base.Awake();
@@ -15,12 +15,15 @@ public class SaveManager : Singleton<SaveManager>
 
     private void LoadData()
     {
+        IsFirstPlay = true;
+        IsFirstPlay = !PlayerPrefs.HasKey("isfirstplay");
         CurrencyManager.Instance.SetCurrency(PlayerPrefs.GetInt("currency"));
         LevelManager.Instance.SetLevel(PlayerPrefs.GetInt("level"));
     }
 
     public void SaveData()
     {
+        PlayerPrefs.SetInt("isfirstplay", 0);
         PlayerPrefs.SetInt("currency", CurrencyManager.Instance.GetCurrency());
         PlayerPrefs.SetInt("level", LevelManager.Instance.GetLevel());
         PlayerPrefs.Save();

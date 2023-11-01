@@ -1,5 +1,5 @@
+using TMN.PoolManager;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class MoveController : MonoBehaviour
 {
@@ -33,7 +33,7 @@ public class MoveController : MonoBehaviour
             {
                 _isMouseDragging = true;
                 _screenPosition = Camera.main.WorldToScreenPoint(_target.transform.position);
-                _offset = _target.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPosition.z));
+                _offset = new Vector3(_target.transform.position.x, _target.transform.position.y + 0.5f, _target.transform.position.z) - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPosition.z));
             }
         }
 
@@ -42,6 +42,18 @@ public class MoveController : MonoBehaviour
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray.origin, ray.direction * 10, out RaycastHit hit))
             {
+                if (hit.collider.TryGetComponent<IMergeable>(out IMergeable mergeable))
+                {
+                    if (MergeManager.Instance.CanMerge(_target.GetComponent<IMergeable>(), mergeable))
+                    {
+                        var standOnSlot = hit.collider.GetComponent<IMoveable>()?.StandOnSlot;
+                        standOnSlot.FillSlot(_moveable);
+                        _lastSlot.SetEmptySlot();
+                        _lastSlot = standOnSlot;
+                        PoolManager.Instance.Despawn(mergeable.Type, hit.collider.gameObject);
+                    }
+                }
+
                 if (hit.collider.TryGetComponent<Slot>(out Slot slot))
                 {
                     if (!slot.IsFull)
@@ -56,13 +68,14 @@ public class MoveController : MonoBehaviour
             _target.transform.position = _lastSlot.StandV3;
             _target.GetComponent<Collider>().enabled = true;
             _isMouseDragging = false;
+            _target = null;
         }
 
         if (_isMouseDragging)
         {
             var currentScreenSpace = new Vector3(Input.mousePosition.x, Input.mousePosition.y, _screenPosition.z);
             var currentPosition = Camera.main.ScreenToWorldPoint(currentScreenSpace) + _offset;
-            _target.transform.position = new Vector3(currentPosition.x, _target.transform.position.y, currentPosition.z);
+            _target.transform.position = currentPosition;
         }
     }
 }

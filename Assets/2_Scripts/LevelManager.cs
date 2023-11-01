@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMN;
-using UnityEngine;
-
 public class LevelManager : Singleton<LevelManager>
 {
     private int _level;
 
     public void SetLevel(int level)
     {
+        if (SaveManager.Instance.IsFirstPlay)
+        {
+            _level = 1;
+            return;
+        }
         _level = level;
     }
 

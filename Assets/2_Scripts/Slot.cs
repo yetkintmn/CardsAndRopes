@@ -4,7 +4,6 @@ public class Slot : MonoBehaviour
 {
     public bool IsFull { get; private set; }
     public IMoveable Moveable { get; private set; }
-
     public Vector3 StandV3 { get; private set; }
 
     private void Start()
