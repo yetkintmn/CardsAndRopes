@@ -56,7 +56,6 @@ ExportedObj/
 sysinfo.txt
 
 # Builds
-*.apk
 *.aab
 *.unitypackage
 *.unitypackage.meta
@@ -167,4 +166,3 @@ Temporary Items
 .nfs*
 
 /Recordings/
-/Hammer/
